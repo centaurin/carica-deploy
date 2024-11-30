@@ -14,6 +14,7 @@ services:
       - ./config/cert.pem:/cert/cert.pem
     env_file: ./config/haproxy.env
   carica-ui:
+    user: root
     image: ghcr.io/centaurin/carica:latest
     volumes: 
       - ./config/carica-ui.env:/app/.env
