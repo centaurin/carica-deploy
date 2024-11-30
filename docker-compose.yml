@@ -1,0 +1,22 @@
+networks:
+  carica-bridge:
+    driver: bridge
+
+services:
+  haproxy:
+    image: haproxy:3.1.0-alpine
+    ports: 
+    - "${HTTP_BIND}:80"
+    - "${HTTPS_BIND}:443"
+    networks: [carica-bridge]
+    volumes: 
+      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg 
+      - ./config/cert.pem:/cert/cert.pem
+    env_file: ./config/haproxy.env
+  carica-ui:
+    image: ghcr.io/centaurin/carica:latest
+    volumes: 
+      - ./config/carica-ui.env:/app/.env
+      - /run/postgres:/run/postgres
+    networks: [carica-bridge]
+
