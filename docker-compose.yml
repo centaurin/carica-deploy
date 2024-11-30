@@ -19,4 +19,7 @@ services:
       - ./config/carica-ui.env:/app/.env
       - /run/postgres:/run/postgres
     networks: [carica-bridge]
+  carica-ml:
+    image: ghcr.io/centaurin/carica-ml:latest
+    networks: [carica-bridge]
 
