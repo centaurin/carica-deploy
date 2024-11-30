@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-cd ~/Deployment
+cd ~/carica-deploy
 
 git pull
 podman compose pull
