@@ -17,6 +17,7 @@ services:
       - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg 
       - ./config/cert.pem:/cert/cert.pem
     env_file: ./config/haproxy.env
+
   carica-ui:
     image: ghcr.io/centaurin/carica:latest
     volumes: 
@@ -25,10 +26,13 @@ services:
     depends_on:
       postgres:
         condition: service_started
+    environment: 
+      - ORIGIN: ${DOMAIN_NAME}
 
   carica-ml:
     image: ghcr.io/centaurin/carica-ml:latest
     networks: [carica-bridge]
+
   postgres:
     image: postgres
     networks: [carica-bridge]
