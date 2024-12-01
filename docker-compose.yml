@@ -1,3 +1,7 @@
+volumes:
+  postgres-data:
+    driver: local
+
 networks:
   carica-bridge:
     driver: bridge
@@ -14,13 +18,28 @@ services:
       - ./config/cert.pem:/cert/cert.pem
     env_file: ./config/haproxy.env
   carica-ui:
-    user: root
     image: ghcr.io/centaurin/carica:latest
     volumes: 
       - ./config/carica-ui.env:/app/.env
-      - /run/postgres:/run/postgres
     networks: [carica-bridge]
+    depends_on:
+      postgres:
+        condition: service_started
+
   carica-ml:
     image: ghcr.io/centaurin/carica-ml:latest
     networks: [carica-bridge]
-
+  postgres:
+    image: postgres
+    networks: [carica-bridge]
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./dbinit.sql:/docker-entrypoint-initdb.d/dbinit.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
