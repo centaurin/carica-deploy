@@ -1,2 +1,3 @@
-# carica-deploy
-Auto deploy for carica frontend, backend and proxy-server.
+# Carica Deploy
+
+This repository contain a docker compose file and a update script for the server. For further details of how our CI/CD works, please refer to [Carica Kestra](https://github.com/centaurin/carica-kestra)
