@@ -27,7 +27,7 @@ services:
       postgres:
         condition: service_started
     environment: 
-      - ORIGIN: ${DOMAIN_NAME}
+      ORIGIN: ${DOMAIN_NAME}
 
   carica-ml:
     image: ghcr.io/centaurin/carica-ml:latest
